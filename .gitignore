@@ -1,0 +1,19 @@
+# Maven
+/target/
+*.log
+*.out
+
+# IDE-specific files (do not include in version control)
+.idea/
+.project
+.classpath
+*.iml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Spring Boot build artifacts
+*.jar
+*.war
+*.ear
