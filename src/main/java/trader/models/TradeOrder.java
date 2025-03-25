@@ -42,10 +42,10 @@ public class TradeOrder {
     private LocalDateTime createdAt;
 
     // Povezivanje sa trgovcem (trader), koji je postavio nalog
-   /* @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "trader_id", nullable = false)
     private Trader trader; // Povezivanje sa trgovcem koji je postavio nalog
-*/
+
     // Konstruktor bez parametara, za JPA
     public TradeOrder() {
         this.createdAt = LocalDateTime.now(); // Automatski setuje vreme kreiranja
@@ -90,16 +90,16 @@ public class TradeOrder {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }/*
+    }
 
-    public Trader getTrader() {
+  public Trader getTrader() {
         return trader;
     }
 
     public void setTrader(Trader trader) {
         this.trader = trader;
-    }*/
-
+    }
+    
     @Override
     public String toString() {
         return "TradeOrder{" +
@@ -108,7 +108,7 @@ public class TradeOrder {
                 ", price=" + price +
                 ", amount=" + amount +
                 ", createdAt=" + createdAt +
-                //", trader=" + trader +
+               // ", trader=" + trader +
                 '}';
     }
 }

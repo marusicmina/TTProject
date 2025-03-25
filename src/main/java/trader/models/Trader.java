@@ -23,8 +23,8 @@ public class Trader {
     private String password;
 
     @OneToMany(mappedBy = "trader", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  /*  private List<TradeOrder> orders;
-*/
+    private List<TradeOrder> orders;
+
     // Getteri i setteri
     public Long getId() {
         return id;
@@ -65,12 +65,12 @@ public class Trader {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
-    public List<TradeOrder> getOrders() {
+
+   public List<TradeOrder> getOrders() {
         return orders;
     }
 
     public void setOrders(List<TradeOrder> orders) {
         this.orders = orders;
-    }*/
+    }
 }
