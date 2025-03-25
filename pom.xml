@@ -1,92 +1,100 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+  	<modelVersion>4.0.0</modelVersion>
 
-  <!-- Parent pom for Spring Boot project -->
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.4</version>
-    <relativePath/>
-  </parent>
+  	<!-- Parent pom for Spring Boot project -->
+  	<parent>
+    	<groupId>org.springframework.boot</groupId>
+    	<artifactId>spring-boot-starter-parent</artifactId>
+    	<version>2.7.4</version>
+    	<relativePath/>
+  	</parent>
 
-  <groupId>trader-app</groupId>
-  <artifactId>teletrader-app</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  	<groupId>trader-app</groupId>
+  	<artifactId>teletrader-app</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
 
-  <dependencies>
+  	<dependencies>
     <!-- Spring Boot Starter Web: Includes basic web dependencies like Spring MVC, REST, and Tomcat -->
-    <dependency>
+    	<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
+    	</dependency>
 
     <!-- Spring Boot Starter WebSocket -->
-    <dependency>
+    	<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-websocket</artifactId>
-    </dependency>
+    	</dependency>
 
     <!-- H2 Database (for testing purposes) -->
-    <dependency>
+    	<dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <version>2.3.232</version>
         <scope>test</scope>
-    </dependency>
+    	</dependency>
 
     <!-- Spring Boot Starter Test -->
-    <dependency>
+    	<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
         <scope>test</scope>
-    </dependency>
+    	</dependency>
 
     <!-- Springdoc OpenAPI for Swagger -->
-    <dependency>
+    	<dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-ui</artifactId>
         <version>1.6.14</version>
-    </dependency>
+    	</dependency>
 
     <!-- Spring Data JPA -->
-    <dependency>
+    	<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+    	</dependency>
 
     <!-- SLF4J API -->
-    <dependency>
+    	<dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>1.7.32</version>
-    </dependency>
+    	</dependency>
 
     <!-- Logback implementation for SLF4J -->
-    <dependency>
+    	<dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>1.2.6</version>
-    </dependency>
-
+    	</dependency>
+	
     <!-- Lombok for @Slf4j annotation -->
-    <dependency>
+    	<dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>1.18.22</version>
         <scope>provided</scope>
-    </dependency>
+    	</dependency>
 
 	 <!-- H2 baza podataka -->
-    <dependency>
+    	<dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <scope>runtime</scope>
-    </dependency>
+    	</dependency>
     <!-- Spring Boot Logging -->
-    <dependency>
+    	<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-logging</artifactId>
-    </dependency>
+    	</dependency>
+    	
+    	
+    	<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+  
   </dependencies>
 
   <build>
