@@ -1,9 +1,11 @@
 package trader.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Valid
 public class TraderRegistrationDto {
 
     @NotBlank(message = "First name is required")

@@ -27,11 +27,15 @@ public class TradeOrderController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping
+   @PostMapping
     public TradeOrder createOrder(@RequestBody TradeOrder order) {
         return tradeOrderService.saveOrder(order);
     }
-
+/*
+    @PostMapping
+    public TradeOrderDTO createOrder(@RequestBody TradeOrderDTO order) {
+        return tradeOrderService.saveOrder(order);
+    }*/
     private TradeOrderDTO convertToDTO(TradeOrder order) {
         return new TradeOrderDTO(
                 order.getOrderType(),

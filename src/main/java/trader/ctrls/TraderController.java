@@ -14,6 +14,9 @@ import trader.service.TraderService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
+@Valid
 @RestController
 @RequestMapping("/traders")  // Putanja za pristup svim traderima
 public class TraderController {
@@ -40,9 +43,10 @@ public class TraderController {
 
     // Endpoint za login tradera
     @PostMapping("/login")
-    public Trader loginTrader(@RequestBody TraderLoginDto traderLoginDto) {
+    public String loginTrader(@RequestBody TraderLoginDto traderLoginDto) {
         return traderService.loginTrader(traderLoginDto.getUsername(), traderLoginDto.getPassword());
     }
+
 
     // Endpoint za kreiranje tradera
     @PostMapping
