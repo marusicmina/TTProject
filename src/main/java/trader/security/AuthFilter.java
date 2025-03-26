@@ -40,6 +40,13 @@ public class AuthFilter implements Filter {
         try {
             // Validacija tokena pomoću JwtUtil klase
             jwtUtil.verifyToken(token);
+            
+            // Ekstrakcija korisničkog imena iz tokena
+            String username = jwtUtil.extractUsername(token);
+            
+            // Postavljanje korisničkog imena u request atribute (može biti korisno za dalje procesiranje)
+            httpRequest.setAttribute("username", username);
+
         } catch (JWTVerificationException e) {
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpResponse.getWriter().write("Invalid or expired token");
@@ -62,4 +69,5 @@ public class AuthFilter implements Filter {
     public void destroy() {
     }
 }
+
 

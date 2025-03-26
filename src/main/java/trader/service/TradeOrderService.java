@@ -1,60 +1,82 @@
 package trader.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import trader.dto.TradeOrderDTO;
 import trader.models.TradeOrder;
+import trader.models.Trader;
 import trader.repositories.TradeOrderRepository;
-import trader.webSockets.OrderWebSocketHandler;
+import trader.repositories.TraderRepository;
 
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+
+import java.awt.print.Pageable;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.stream.Collectors;
 
 @Service
 public class TradeOrderService {
 
-    @Autowired
-    private TradeOrderRepository tradeOrderRepository;
+    private final TradeOrderRepository tradeOrderRepository;
+    private final TraderRepository traderRepository;
+    private final HttpServletRequest request;
 
-    @Autowired
-    private OrderWebSocketHandler orderWebSocketHandler;  // WebSocket handler za obaveštavanje klijenata
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    // Metoda za dobijanje svih naloga
-    public List<TradeOrder> getAllOrders() {
-        return tradeOrderRepository.findAll();
+    public TradeOrderService(TradeOrderRepository tradeOrderRepository, 
+                             TraderRepository traderRepository, 
+                             HttpServletRequest request) {
+        this.tradeOrderRepository = tradeOrderRepository;
+        this.traderRepository = traderRepository;
+        this.request = request;
     }
 
-    // Metoda za čuvanje novog naloga
-    public TradeOrder saveOrder(TradeOrder order) {
-        TradeOrder savedOrder = tradeOrderRepository.save(order);
+    @Transactional
+    public TradeOrderDTO createTradeOrder(TradeOrderDTO tradeOrderDTO) {
+        // Dobijamo username koji je postavljen u filteru
+        String username = (String) request.getAttribute("username");
 
-        // Kada se doda novi order, šaljemo poruku kroz WebSocket
-        try {
-            String orderJson = objectMapper.writeValueAsString(savedOrder);
-            orderWebSocketHandler.broadcastOrderUpdate(orderJson);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (username == null) {
+            throw new RuntimeException("User not authenticated");
         }
 
-        return savedOrder;
+        Trader trader = traderRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Trader not found"));
+
+        TradeOrder tradeOrder = new TradeOrder();
+        tradeOrder.setOrderType(tradeOrderDTO.getOrderType());
+        tradeOrder.setPrice(tradeOrderDTO.getPrice());
+        tradeOrder.setAmount(tradeOrderDTO.getAmount());
+        tradeOrder.setTrader(trader);
+
+        tradeOrder = tradeOrderRepository.save(tradeOrder);
+
+        return TradeOrderDTO.fromEntity(tradeOrder);
     }
 
- // Metoda za dobijanje Top 10 Buy naloga
-    public List<TradeOrder> getTopBuyOrders() {
-        Pageable pageable = PageRequest.of(0, 10); // Prva stranica, 10 elemenata
-        return tradeOrderRepository.findTop10BuyOrders(pageable);
+    public List<TradeOrderDTO> getAllTradeOrders() {
+        return tradeOrderRepository.findAll()
+                .stream()
+                .map(TradeOrderDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+   
+
+    // Vraća top 10 BUY naloga po najvišoj ceni
+    public List<TradeOrderDTO> getTop10BuyOrdersDTO() {
+        return tradeOrderRepository.findTop10BuyOrders(PageRequest.of(0, 10))
+                .stream()
+                .map(TradeOrderDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    // Metoda za dobijanje Top 10 Sell naloga
-    public List<TradeOrder> getTopSellOrders() {
-        Pageable pageable = PageRequest.of(0, 10); // Prva stranica, 10 elemenata
-        return tradeOrderRepository.findTop10SellOrders(pageable);
+    // Vraća top 10 SELL naloga po najnižoj ceni
+    public List<TradeOrderDTO> getTop10SellOrdersDTO() {
+        return tradeOrderRepository.findTop10SellOrders(PageRequest.of(0, 10))
+                .stream()
+                .map(TradeOrderDTO::fromEntity)
+                .collect(Collectors.toList());
     }
-
 }
+
+
 

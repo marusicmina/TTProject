@@ -28,4 +28,12 @@ public class JwtUtil {
         JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token);
     }
+    public String extractUsername(String token) {
+        return JWT.require(Algorithm.HMAC256(secretKey))  // Koristite isti algoritam kao kod generisanja
+                .build()
+                .verify(token)
+                .getClaim("sub")  // Pretpostavka da se username čuva u claimu "sub"
+                .asString();
+    }
+
 }

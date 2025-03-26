@@ -69,7 +69,14 @@ public class TraderService {
         // Šifrovanje lozinke pre nego što se sačuva
         return saveTrader(trader);
     }
+    public Trader findTraderByUsername(String username) {
+        return traderRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trader not found with username: " + username));
+    }
+
 }
+
+
 
 
 

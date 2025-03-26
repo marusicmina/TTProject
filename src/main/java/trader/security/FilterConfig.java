@@ -17,7 +17,7 @@ public class FilterConfig {
         
         // Ovdje možeš da odrediš koje URL obrasce (putanje) će filter obraditi
         registrationBean.addUrlPatterns("/trade-orders/*");  // Možeš koristiti i "/*" ako želiš da štitiš sve rute
-        registrationBean.addUrlPatterns("/traders/*");  // Možeš koristiti i "/*" ako želiš da štitiš sve rute
+        //registrationBean.addUrlPatterns("/traders/*");  // Možeš koristiti i "/*" ako želiš da štitiš sve rute
 
         // Opcionalno, možeš da postaviš redosled primene filtera
         registrationBean.setOrder(1); // Manji broj znači ranije izvršavanje
