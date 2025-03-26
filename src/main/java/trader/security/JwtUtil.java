@@ -10,17 +10,22 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private String secretKey = "tajniKljuc";  // Koristi sigurniji ključ u stvarnom okruženju!
+    private String secretKey = "JWT_SECRET_KEY";  // Koristi siguran ključ sa okruženja
 
     // Metoda za generisanje tokena
     public String generateToken(String username) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
-                .withSubject(username)  // Postavljamo korisničko ime kao subjekat
-                .withIssuedAt(new Date())  // Postavljamo datum izdavanja tokena
+                .withSubject(username)
+                .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))  // Token važi 1 sat
-                .sign(algorithm);  // Potpisujemo token
+                .sign(algorithm);
     }
 
-
+    // Metoda za verifikaciju tokena
+    public DecodedJWT verifyToken(String token) throws JWTVerificationException {
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        return verifier.verify(token);
+    }
 }

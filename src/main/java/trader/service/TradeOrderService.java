@@ -44,16 +44,17 @@ public class TradeOrderService {
         return savedOrder;
     }
 
-    // Metoda za dobijanje Top 10 Buy naloga
-    public List<TradeOrder> getTopBuyOrders(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);  // Stranicenje parametarski
+ // Metoda za dobijanje Top 10 Buy naloga
+    public List<TradeOrder> getTopBuyOrders() {
+        Pageable pageable = PageRequest.of(0, 10); // Prva stranica, 10 elemenata
         return tradeOrderRepository.findTop10BuyOrders(pageable);
     }
 
     // Metoda za dobijanje Top 10 Sell naloga
-    public List<TradeOrder> getTopSellOrders(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);  // Stranicenje parametarski
+    public List<TradeOrder> getTopSellOrders() {
+        Pageable pageable = PageRequest.of(0, 10); // Prva stranica, 10 elemenata
         return tradeOrderRepository.findTop10SellOrders(pageable);
     }
+
 }
 
