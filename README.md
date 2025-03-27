@@ -24,6 +24,8 @@ PostgreSQL baza podataka
    
 Instalirajte i pokrenite PostgreSQL.
 
+Ukoliko ima problema oko pokretanja i testiranja projekta pišite na mejl: minamarusic@gmail.com
+
 Kreirajte bazu podataka sa nazivom trader.
 
 Podrazumevani pristupni podaci (mogu se promeniti u application.properties):
