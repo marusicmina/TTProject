@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
 	    errors.put("status", HttpStatus.BAD_REQUEST.value());
 	    errors.put("error", "Validation Failed");
 
-	    // Mapiramo sva polja koja nisu validna i njihove poruke
 	    Map<String, String> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
 	            .collect(Collectors.toMap(
 	                    error -> error.getField(),
