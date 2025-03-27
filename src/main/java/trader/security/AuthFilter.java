@@ -19,7 +19,7 @@ public class AuthFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // Inicijalizuj JwtUtil
+        
         jwtUtil = new JwtUtil();
     }
 
@@ -38,13 +38,12 @@ public class AuthFilter implements Filter {
         }
 
         try {
-            // Validacija tokena pomoću JwtUtil klase
+            
             jwtUtil.verifyToken(token);
             
-            // Ekstrakcija korisničkog imena iz tokena
+            
             String username = jwtUtil.extractUsername(token);
             
-            // Postavljanje korisničkog imena u request atribute (može biti korisno za dalje procesiranje)
             httpRequest.setAttribute("username", username);
 
         } catch (JWTVerificationException e) {
@@ -53,16 +52,16 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        chain.doFilter(request, response);  // Nastavi sa filtriranjem ako je token validan
+        chain.doFilter(request, response); 
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
-        // Token se obično šalje u Authorization headeru u formatu "Bearer <token>"
-        String authorizationHeader = request.getHeader("Authorization");
+       
+    	String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7);  // Ukloni "Bearer " prefiks
+            return authorizationHeader.substring(7);  
         }
-        return null;  // Ako nije prisutan
+        return null;  
     }
 
     @Override

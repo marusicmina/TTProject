@@ -20,63 +20,57 @@ public class TraderService {
     private TraderRepository traderRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;  // BCryptPasswordEncoder se injektuje ovde
+    private PasswordEncoder passwordEncoder;  
 
     @Autowired
     private JwtUtil jwtUtil;
     
-    // Metoda za dobijanje svih tradera
+    
     public List<Trader> getAllTraders() {
         return traderRepository.findAll();
     }
 
-    // Metoda za kreiranje novog tradera
+    
     public Trader saveTrader(Trader trader) {
-        trader.setPassword(passwordEncoder.encode(trader.getPassword()));  // Šifrovanje lozinke
+        trader.setPassword(passwordEncoder.encode(trader.getPassword()));  
         return traderRepository.save(trader);
     }
 
-    // Metoda za logovanje tradera
+    
     public String loginTrader(String username, String password) {
         Trader trader = traderRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Trader not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trader not found"));
 
-        // Proveravamo lozinku
+        
         if (!passwordEncoder.matches(password, trader.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
-       // return trader;
+
         return jwtUtil.generateToken(username);
     }
 
-    // Registracija novog tradera
+   
     public Trader registerTrader(TraderRegistrationDto traderRegistrationDto) {
-        // Proveri da li korisničko ime već postoji
         if (traderRepository.existsByUsername(traderRegistrationDto.getUsername())) {
-            // Ovaj deo više nije potreban jer GlobalExceptionHandler obradi ResponseStatusException
-            // throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
-        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
-
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
         }
 
-        // Kreiraj novog tradera
         Trader trader = new Trader();
         trader.setFirstName(traderRegistrationDto.getFirstName());
         trader.setLastName(traderRegistrationDto.getLastName());
         trader.setUsername(traderRegistrationDto.getUsername());
-        trader.setPassword(traderRegistrationDto.getPassword());  
+        
+        
+        trader.setPassword(passwordEncoder.encode(traderRegistrationDto.getPassword()));
 
-        // Šifrovanje lozinke pre nego što se sačuva
-        return saveTrader(trader);
+        return traderRepository.save(trader);
     }
+
     public Trader findTraderByUsername(String username) {
         return traderRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trader not found with username: " + username));
     }
-
 }
-
-
 
 
 

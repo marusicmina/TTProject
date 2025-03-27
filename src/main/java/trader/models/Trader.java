@@ -32,7 +32,7 @@ public class Trader {
     @OneToMany(mappedBy = "trader", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TradeOrder> orders;
 
-    // Getteri i setteri
+
     public Long getId() {
         return id;
     }
@@ -81,10 +81,9 @@ public class Trader {
         this.orders = orders;
     }
 
-    // Metod za šifrovanje lozinke
     public void setEncryptedPassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        this.password = encoder.encode(password);  // Šifrovanje lozinke pre nego što se sačuva
+        this.password = encoder.encode(password);  
     }
 }
 

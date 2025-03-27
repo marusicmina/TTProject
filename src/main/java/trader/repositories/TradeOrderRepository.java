@@ -8,8 +8,7 @@ import trader.models.TradeOrder;
 import java.util.List;
 
 public interface TradeOrderRepository extends JpaRepository<TradeOrder, Long> {
-    // Dodatne metode mogu biti definisane ovde, ako su potrebne (npr. za filtriranje)
-
+   
     @Query("SELECT t FROM TradeOrder t WHERE t.orderType = 'BUY' ORDER BY t.price DESC")
     List<TradeOrder> findTop10BuyOrders(Pageable pageable);
 

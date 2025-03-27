@@ -17,8 +17,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("*");
     }
 
-    //@Bean
+    
     public WebSocketHandler orderWebSocketHandler() {
-        return new OrderWebSocketHandler();  // Registrujemo handler kao bean
+        return new OrderWebSocketHandler();  
     }
 }

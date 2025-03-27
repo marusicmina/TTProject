@@ -5,13 +5,13 @@ import trader.models.OrderType;
 import trader.models.TradeOrder;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor  // Obezbeđuje prazan konstruktor za Jackson
+@NoArgsConstructor  
 public class TradeOrderDTO {
 
     private OrderType orderType;
     private BigDecimal price;
     private Integer amount;
-    private String traderUsername; // Dodato korisničko ime tradera
+    private String traderUsername; 
 
     public TradeOrderDTO(OrderType orderType, BigDecimal price, Integer amount, String traderUsername) {
         this.orderType = orderType;
@@ -29,7 +29,7 @@ public class TradeOrderDTO {
         );
     }
 
-    // Getters i Setters
+   
     public OrderType getOrderType() { return orderType; }
     public void setOrderType(OrderType orderType) { this.orderType = orderType; }
 

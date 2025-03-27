@@ -15,13 +15,13 @@ import java.util.List;
 @Component
 public class OrderWebSocketHandler implements WebSocketHandler {
 
-    private static List<WebSocketSession> sessions = new ArrayList<>();  // Lista aktivnih sesija
+    private static List<WebSocketSession> sessions = new ArrayList<>();  
 
-    // Metoda za broadcast poruka svim sesijama
+    
     public void broadcastOrderUpdate(String orderJson) {
         for (WebSocketSession session : sessions) {
             try {
-                session.sendMessage(new TextMessage(orderJson));  // Šaljemo poruku svakom klijentu
+                session.sendMessage(new TextMessage(orderJson));  
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -30,13 +30,13 @@ public class OrderWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        sessions.add(session);  // Dodajemo novu sesiju kada se uspostavi veza
+        sessions.add(session);  
         System.out.println("New WebSocket session established: " + session.getId());
     }
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        // Obrada poruka (ako je potrebno)
+        
         System.out.println("Received message: " + message.getPayload());
     }
 
@@ -48,13 +48,13 @@ public class OrderWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        sessions.remove(session);  // Uklanjamo sesiju kada se veza zatvori
+        sessions.remove(session);  
         System.out.println("WebSocket session closed: " + session.getId());
     }
 
     @Override
     public boolean supportsPartialMessages() {
-        return false;  // Ne podržavamo parcijalne poruke
+        return false;  
     }
 }
 

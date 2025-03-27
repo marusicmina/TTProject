@@ -10,13 +10,13 @@ public class TraderLoginDto {
     @NotBlank(message = "Password is required")
     private String password;
 
-    // Konstruktor
+    
     public TraderLoginDto(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    // Getteri i setteri
+    
     public String getUsername() {
         return username;
     }

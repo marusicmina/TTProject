@@ -1,4 +1,4 @@
-package trader.ctrls;
+package trader.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class TradeOrderController {
         return ResponseEntity.ok(tradeOrderService.createTradeOrder(tradeOrderDTO));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<TradeOrderDTO>> getAllTradeOrders() {
         return ResponseEntity.ok(tradeOrderService.getAllTradeOrders());
     }
@@ -39,4 +39,3 @@ public class TradeOrderController {
         return ResponseEntity.ok(tradeOrderService.getTop10SellOrdersDTO());
     }
 }
-

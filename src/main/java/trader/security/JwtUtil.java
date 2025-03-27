@@ -10,9 +10,8 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private String secretKey = "JWT_SECRET_KEY";  // Koristi siguran ključ sa okruženja
-
-    // Metoda za generisanje tokena
+    private String secretKey = "JWT_SECRET_KEY";  
+    
     public String generateToken(String username) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
@@ -22,17 +21,16 @@ public class JwtUtil {
                 .sign(algorithm);
     }
 
-    // Metoda za verifikaciju tokena
     public DecodedJWT verifyToken(String token) throws JWTVerificationException {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         JWTVerifier verifier = JWT.require(algorithm).build();
         return verifier.verify(token);
     }
     public String extractUsername(String token) {
-        return JWT.require(Algorithm.HMAC256(secretKey))  // Koristite isti algoritam kao kod generisanja
+        return JWT.require(Algorithm.HMAC256(secretKey))  
                 .build()
                 .verify(token)
-                .getClaim("sub")  // Pretpostavka da se username čuva u claimu "sub"
+                .getClaim("sub")  
                 .asString();
     }
 
