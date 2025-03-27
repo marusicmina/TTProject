@@ -1,17 +1,31 @@
-package trader.dto;
+package  trader.dto;
 
-import java.math.BigDecimal;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import trader.models.OrderType;
 import trader.models.TradeOrder;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor  
+import java.math.BigDecimal;
+
+import jakarta.validation.constraints.Min;
+
 public class TradeOrderDTO {
 
+    @NotNull(message = "Order type is required")
     private OrderType orderType;
+
+    @NotNull(message = "Price is required")
+    @Min(value = 1, message = "Price must be greater than 0")
     private BigDecimal price;
+
+    @NotNull(message = "Amount is required")
+    @Min(value = 1, message = "Amount must be greater than 0")
     private Integer amount;
-    private String traderUsername; 
+
+    @NotBlank(message = "Trader username cannot be blank")
+    private String traderUsername;
+
+    
 
     public TradeOrderDTO(OrderType orderType, BigDecimal price, Integer amount, String traderUsername) {
         this.orderType = orderType;

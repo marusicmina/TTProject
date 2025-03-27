@@ -2,8 +2,11 @@ package trader.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
 
 import trader.dto.TradeOrderDTO;
 import trader.service.TradeOrderService;
@@ -18,24 +21,32 @@ public class TradeOrderController {
         this.tradeOrderService = tradeOrderService;
     }
 
+    
+
     @PostMapping
-    public ResponseEntity<TradeOrderDTO> createTradeOrder(@RequestBody TradeOrderDTO tradeOrderDTO) {
-        return ResponseEntity.ok(tradeOrderService.createTradeOrder(tradeOrderDTO));
+    public CompletableFuture<ResponseEntity<TradeOrderDTO>> createTradeOrder(
+            @RequestBody @Valid TradeOrderDTO tradeOrderDTO, 
+            @RequestAttribute("username") String username) {
+        return tradeOrderService.createTradeOrder(tradeOrderDTO, username)
+                .thenApply(ResponseEntity::ok);
     }
 
+
     @GetMapping("/all")
-    public ResponseEntity<List<TradeOrderDTO>> getAllTradeOrders() {
-        return ResponseEntity.ok(tradeOrderService.getAllTradeOrders());
+    public CompletableFuture<ResponseEntity<List<TradeOrderDTO>>> getAllTradeOrders() {
+        return tradeOrderService.getAllTradeOrders()
+                .thenApply(ResponseEntity::ok);
     }
-    
-   
+
     @GetMapping("/top10-buy")
-    public ResponseEntity<List<TradeOrderDTO>> getTop10BuyOrders() {
-        return ResponseEntity.ok(tradeOrderService.getTop10BuyOrdersDTO());
+    public CompletableFuture<ResponseEntity<List<TradeOrderDTO>>> getTop10BuyOrders() {
+        return tradeOrderService.getTop10BuyOrdersDTO()
+                .thenApply(ResponseEntity::ok);
     }
 
     @GetMapping("/top10-sell")
-    public ResponseEntity<List<TradeOrderDTO>> getTop10SellOrders() {
-        return ResponseEntity.ok(tradeOrderService.getTop10SellOrdersDTO());
+    public CompletableFuture<ResponseEntity<List<TradeOrderDTO>>> getTop10SellOrders() {
+        return tradeOrderService.getTop10SellOrdersDTO()
+                .thenApply(ResponseEntity::ok);
     }
 }

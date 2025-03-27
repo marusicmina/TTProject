@@ -1,12 +1,14 @@
 package trader.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.scheduling.annotation.Async;
 
 import trader.dto.TraderRegistrationDto;
 import trader.models.Trader;
@@ -25,53 +27,56 @@ public class TraderService {
     @Autowired
     private JwtUtil jwtUtil;
     
-    
-    public List<Trader> getAllTraders() {
-        return traderRepository.findAll();
+    @Async
+    public CompletableFuture<List<Trader>> getAllTraders() {
+        return CompletableFuture.supplyAsync(traderRepository::findAll);
     }
 
-    
-    public Trader saveTrader(Trader trader) {
+    @Async
+    public CompletableFuture<Trader> saveTrader(Trader trader) {
         trader.setPassword(passwordEncoder.encode(trader.getPassword()));  
-        return traderRepository.save(trader);
+        return CompletableFuture.supplyAsync(() -> traderRepository.save(trader));
     }
 
-    
-    public String loginTrader(String username, String password) {
-        Trader trader = traderRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trader not found"));
+    @Async
+    public CompletableFuture<String> loginTrader(String username, String password) {
+        return CompletableFuture.supplyAsync(() -> {
+            Trader trader = traderRepository.findByUsername(username)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trader not found"));
 
-        
-        if (!passwordEncoder.matches(password, trader.getPassword())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
-        }
+            if (!passwordEncoder.matches(password, trader.getPassword())) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+            }
 
-        return jwtUtil.generateToken(username);
+            return jwtUtil.generateToken(username);
+        });
     }
 
-   
-    public Trader registerTrader(TraderRegistrationDto traderRegistrationDto) {
-        if (traderRepository.existsByUsername(traderRegistrationDto.getUsername())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
-        }
+    @Async
+    public CompletableFuture<Trader> registerTrader(TraderRegistrationDto traderRegistrationDto) {
+        return CompletableFuture.supplyAsync(() -> {
+            if (traderRepository.existsByUsername(traderRegistrationDto.getUsername())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
+            }
 
-        Trader trader = new Trader();
-        trader.setFirstName(traderRegistrationDto.getFirstName());
-        trader.setLastName(traderRegistrationDto.getLastName());
-        trader.setUsername(traderRegistrationDto.getUsername());
-        
-        
-        trader.setPassword(passwordEncoder.encode(traderRegistrationDto.getPassword()));
+            Trader trader = new Trader();
+            trader.setFirstName(traderRegistrationDto.getFirstName());
+            trader.setLastName(traderRegistrationDto.getLastName());
+            trader.setUsername(traderRegistrationDto.getUsername());
+            trader.setPassword(passwordEncoder.encode(traderRegistrationDto.getPassword()));
 
-        return traderRepository.save(trader);
+            return traderRepository.save(trader);
+        });
     }
 
-    public Trader findTraderByUsername(String username) {
-        return traderRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trader not found with username: " + username));
+    @Async
+    public CompletableFuture<Trader> findTraderByUsername(String username) {
+        return CompletableFuture.supplyAsync(() -> 
+            traderRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trader not found with username: " + username))
+        );
     }
 }
-
 
 
 
